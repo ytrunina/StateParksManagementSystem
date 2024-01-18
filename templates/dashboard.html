@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- Displays the dashboard where the user selects what they want to do next. Changes depending on whether the user is an admin or not. -->
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <title>
+    {{ session.username }}'s Dashboard
+  </title>
+</head>
+
+<body>
+  <div class="navbar">
+    {% if session.admin %}
+      <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+      <a href="{{ url_for('add_admin') }}">Add Admin</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+    {% else %}
+      <a href="{{ url_for('my_parks') }}">My Parks</a>
+      <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+      <a href="/profile">Profile</a>
+      <a href="/logout">Logout</a>
+  </div>
+
+  <h1>
+    Welcome {{ session.username }}!
+  </h1>
+  <h2>
+    {% if session.admin %}
+    ADMIN
+    {% else %}
+    Help us keep our parks safe by following the rules!
+    {% endif %}
+  </h2>
+  <h2> FLORIDA STATE PARK RULES </h2> <!-- Grabbed from https://www.floridastateparks.org/Rules -->
+  <h3>
+    <ul>
+      <li>Florida State Parks are open from 8 a.m. to sunset every day of the year. Many museums, visitor centers and
+        historic sites may be closed two days per week, usually Tuesday and Wednesday. Hours may vary, so check the
+        park's page for details.</li>
+      <li>Most state parks require an entrance fee. Additional user fees may apply for activities such as camping, canoe
+        rentals and tours.</li>
+      <li>All plants, animals and park property are protected. The collection, destruction or disturbance of plants,
+        animals or park property is prohibited.</li>
+      <li>Pets are permitted in designated areas only. Where allowed, pets must be kept on a hand-held leash no longer
+        than six feet and be well behaved at all times. Service animals are welcome in all areas of the parks.</li>
+      <li>Fishing, boating, swimming and fires are allowed in designated areas only. A Florida fishing license may be
+        required.</li>
+      <li>Fireworks are prohibited in all Florida State Parks.</li>
+      <li>Hunting is prohibited in Florida State Parks. The state reserves offer special hunting seasons.</li>
+      <li>Alcoholic beverage consumption is allowed in designated areas only.</li>
+      <li>Hammock use and any other associated lines may be attached to trees that are a minimum of 12 inches in
+        diameter measured at chest height and using a minimum of 1-inch-wide flat web straps. Some parks may provide
+        hammock posts instead of trees.</li>
+      <li>For reservations for cabins or camping, go online or call 800-326-3521 or TDD 888-433-0287.</li>
+      <li>Florida's state parks are committed to providing equal access to all facilities and programs. Should you need
+        assistance to enable your participation, please contact staff at any ranger station or call 850-245-3076 (voice)
+        or 711 (Florida Relay Service).</li>
+    </ul>
+  </h3>
+  <h2> STATE TRAILS ETIQUETTE </h2>
+  <h3>
+    <ul>
+      <li>Bicyclists and in-line skaters yield to other users; all trail users yield to equestrians.</li>
+      <li>Obey all trail rules posted at trailheads.</li>
+      <li>Stay to the right except when passing.</li>
+      <li>Pass slower traffic on their left; yield to oncoming traffic when passing.</li>
+      <li>Give a clear warning signal when passing.</li>
+      <li>Always look ahead and behind when passing.</li>
+      <li>Travel at a responsible speed.</li>
+      <li>Move off the trail surface when stopped to allow others to pass.</li>
+      <li>Yield to other trail users when entering and crossing the trail.</li>
+      <li>Keep pets under control on a maximum 6-foot leash; walk them along the edge of any shared-use trail.</li>
+      <li>Do not trespass on private property.</li>
+      <li>Do not disturb wildlife. All animal and plant life is protected in Florida State Parks.</li>
+      <li>Watch out for traffic at road crossings. Obey all traffic signals.</li>
+      <li>Helmets are required by Florida law for cyclists and equestrians under the age of 16 and are recommended for
+        all ages. </li>
+      <li>Equestrians should carry a copy of a negative Coggins test. (Chapter 5C-18.010, F.A.C.). Without
+        documentation, you could be subject to a fine. </li>
+    </ul>
+  </h3>
+</body>
+
+</html>

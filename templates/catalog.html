@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- Displays the catalog of parks and allows the user to select which parks they want to purchase passes for -->
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Park Catalog</title>
+    <script>
+        // Function to validate that at least one park is selected
+        function validateForm() {
+            // Get all checkboxes that are checked
+            const checkboxes = document.querySelectorAll('input[name="parks"]:checked');
+            // If no checked boxes
+            if (checkboxes.length === 0) {
+                // If no checkboxes are selected, show an alert
+                alert('Please select at least one park.');
+                // Return false to prevent submission
+                return false;
+            }
+            // If at least one checked, return true to submit form
+            return true;
+        }
+    </script>
+</head>
+<div class="navbar">
+    {% if session.admin %}
+      <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+      <a href="{{ url_for('add_admin') }}">Add Admin</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+    {% else %}
+      <a href="{{ url_for('my_parks') }}">My Parks</a>
+      <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+      <a href="/profile">Profile</a>
+      <a href="/logout">Logout</a>
+  </div>
+<body>
+    <h1>Annual Park Passes</h1>
+    <input type="text" id="searchInput" onkeyup="searchParks()" placeholder="Search for parks...">
+    <script>
+        // Function to search by name
+        function searchParks() {
+            // Reads from the search bar
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase(); // Makes the search case insensitive
+
+            // Get the table element that contains the rows to be filtered
+            const table = document.querySelector("table");
+
+            // Get all rows of the table.
+            const tr = table.getElementsByTagName("tr");
+
+            // Loop through each row 
+            for (let i = 0; i < tr.length; i++) {
+                // Get the second cell which holds the park name
+                const td = tr[i].getElementsByTagName("td")[1];
+
+                // If the cell exists
+                if (td) {
+                    // Get the text content which is the park name or part of it
+                    const txtValue = td.textContent || td.innerText;
+
+                    // If search term 
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        // If the search term is found, display the row.
+                        tr[i].style.display = "";
+                    } else {
+                        // If the search term is not found, hide the row.
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        // Function to sort the table by column
+        function sortTable(n) {
+            // Get the table 
+            const table = document.querySelector("table");
+
+            let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+            // Set the default sorting order and set the switching variable to true
+            switching = true;
+            dir = "asc";
+
+            // Loop through the rows and sort using dir
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < rows.length - 1; i++) {
+                    shouldSwitch = false;
+
+                    // Get the values of the selected column for the current row and the next row
+                    x = rows[i].getElementsByTagName("td")[n];
+                    y = rows[i + 1].getElementsByTagName("td")[n];
+
+                    // Check the type pf sorting and compare the values of the selected column
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // If a row should be switched, move the row.
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    // If no row was switched and the sorting order is ascending, switch to descending.
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+    <form action="{{ url_for('catalog') }}" method="POST" onsubmit="return validateForm();">
+        <style>
+            /* This is a different style for form than the one on the CSS */
+            form {
+                width: 100%;
+                max-width: 12000px;
+                margin: 20px auto;
+            }
+        </style>
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th onclick="sortTable(1)">Name</th>
+                    <th onclick="sortTable(2)">Description</th>
+                    <th onclick="sortTable(3)">Address</th>
+                    <th onclick="sortTable(4)">Fee</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for park in parks %}
+                <tr>
+                    <td data-label="Select">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="parks" value="{{ park[0] }}" id="park-{{ loop.index0 }}"
+                                style="display:none;">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td data-label="Name"><a href="{{ park[3] }}">{{ park[1] }}</a></td>
+                    <td data-label="Description">{{ park[2] }}</td>
+                    <td data-label="Address">{{ park[4] }}</td>
+                    <td data-label="Fee">${{ park[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Checkout">
+    </form>
+    <button type="button" onclick="location.href='/dashboard'">Back</button>
+</body>
+
+</html>

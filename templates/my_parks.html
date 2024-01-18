@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- Display the user's purchased passes -->
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>My Parks</title>
+    <script>
+        // Implements search by name on table
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', filterTable);
+            function filterTable() {
+                // Get the search value
+                const filter = searchInput.value.toUpperCase();
+                // Get the table
+                const table = document.getElementById('myParksTable');
+                const rows = table.getElementsByTagName('tr');
+
+                // loop through the rows. Skip 1st row because it's the header
+                for (let i = 1; i < rows.length; i++) {
+                    // get the park name cell
+                    const parkNameCell = rows[i].getElementsByTagName('td')[0];
+                    const parkName = parkNameCell.textContent || parkNameCell.innerText;
+                    // check if the park name contains the searched input
+                    if (parkName.toUpperCase().indexOf(filter) > -1) {
+                        // if it does, show the row
+                        rows[i].style.display = '';
+                    } else {
+                        // if it doesn't, hide the row
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        // Qr Code popup
+        document.addEventListener("DOMContentLoaded", function () {
+            // Gets all the elements with class "showPopup" and add event listeners
+            const showPopupButtons = document.getElementsByClassName("showPopup");
+            for (let i = 0; i < showPopupButtons.length; i++) {
+                showPopupButtons[i].addEventListener("click", function () {
+                    const popup = this.nextElementSibling;
+                    popup.style.display = "block";
+                });
+            }
+
+            // Gets all the elements with class "close" and add event listeners. Close button for popup
+            const closeButtons = document.getElementsByClassName("close");
+            for (let i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].addEventListener("click", function () {
+                    const popup = this.parentElement.parentElement;
+                    popup.style.display = "none";
+                });
+            }
+        });
+    </script>
+
+</head>
+<div class="navbar">
+    {% if session.admin %}
+      <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+      <a href="{{ url_for('add_admin') }}">Add Admin</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+    {% else %}
+      <a href="{{ url_for('my_parks') }}">My Parks</a>
+      <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+      <a href="/profile">Profile</a>
+      <a href="/logout">Logout</a>
+  </div>
+<body>
+    <h1>My Parks</h1>
+    <input type="text" id="searchInput" placeholder="Search for park names...">
+    <table id="myParksTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Address</th>
+                <th>Exp. Date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for park in parks %}
+            <tr>
+                <td><a href="{{ park[2] }}">{{ park[0] }}</a></td>
+                <td>{{ park[1] }}</td>
+                <td>{{ park[3] }}</td>
+                <td>{{ park[4] }}</td>
+                {% if park[5] %}
+                <td style="color: green;">Active</td>
+                <td>
+                    <button class="showPopup">Show QR Code</button> <!-- Button to show the pass qr_code -->
+                    <div class="popup">
+                        <div class="popup-content">
+                            <span class="close">&times;</span>
+                            <img src="{{ park[6] }}" alt="QR Code" width="200">
+                        </div>
+                    </div>
+                </td>
+                {% else %}
+                <td style="color: red;">Expired</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" onclick="location.href='/dashboard'">Back</button>
+</body>
+
+</html>

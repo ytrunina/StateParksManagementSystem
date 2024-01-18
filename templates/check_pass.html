@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- Reads QR code using the device's camera and sends it to the server to check if it is valid. -->
+<html>
+
+<head>
+    <title>Check Pass QR</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <div class="navbar">
+        {% if session.admin %}
+          <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+          <a href="{{ url_for('add_admin') }}">Add Admin</a>
+          <a href="{{ url_for('reports') }}">Reports</a>
+        {% endif %}
+        <a href="/profile">Profile</a>
+        {% if not session.admin %}
+          <a href="{{ url_for('my_parks') }}">My Parks</a>
+          <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+        {% endif %}
+        <a href="/logout">Logout</a>
+      </div>
+    <body>
+</head>
+
+<body>
+    <h1>Check Pass QR</h1>
+    <div id="qr-reader" style="width:500px; height:500px;"></div>
+    <script>
+        // Get the HTML element that will display the QR code reader.
+        const qrReader = document.getElementById('qr-reader');
+
+        // Create a new instance of the Html5Qrcode library and pass in the element that will display the QR code reader.
+        const html5QrCode = new Html5Qrcode("qr-reader");
+
+        // Start the QR code reader with the specified settings.
+        html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            // This function is called when a QR code is successfully scanned and decoded.
+            async (decodedText, decodedResult) => {
+                console.log('QR Code: ${ decodedText }');
+                // Stop the QR code reader to prevent further scanning.
+                html5QrCode.stop();
+
+                // Send a POST request to the server with the decoded text as the body.
+                const response = await fetch('check_qr_code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `qr_code=${encodeURIComponent(decodedText)}`
+                });
+
+                // Check if the response is OK and process the response accordingly.
+                if (response.ok) {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("text/html") !== -1) {
+                        // If the response contains HTML content, display it in the current document.
+                        const html = await response.text();
+                        document.open();
+                        document.write(html);
+                        document.close();
+                    } else {
+                        console.error("Invalid content type received:", contentType);
+                    }
+                } else {
+                    console.error("Error:", response.status, response.statusText);
+                }
+            },
+            // This function is called when an error occurs during scanning or decoding.
+            (errorMessage) => {
+                console.log(`Error: ${errorMessage}`);
+            }
+        );
+    </script>
+    <button type="button" onclick="location.href='/dashboard'">Back</button>
+</body>
+
+</html>

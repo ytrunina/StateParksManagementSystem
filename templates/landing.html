@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- Landing page that allows users to login or register -->
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Florida State Parks</title>
+  </head>
+  <body>
+    <h1>Welcome to Florida State Parks System</h1>
+    <p>Most of Florida's state parks are open from 8 a.m. to sunset every day of the year.</p>
+    <p>Museums, visitor centers and historic sites may be closed two days per week and hours may vary.</p> <br>
+    <p>Login to purchase Annual Entrance Pass.</p>
+    <p>Already a user?</p>
+    <button type="button" onclick="location.href='/login'">Login</button>
+    <p>Not a user?</p>
+    <button type="button" onclick="location.href='/register'">Register</button>
+  </body>
+</html>

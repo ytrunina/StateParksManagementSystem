@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<!-- Gets the information to create a new admin account -->
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <title>Add Admin Page</title>
+  <div class="navbar">
+    {% if session.admin %}
+      <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+      <a href="{{ url_for('add_admin') }}">Add Admin</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+    {% endif %}
+    <a href="/profile">Profile</a>
+    {% if not session.admin %}
+      <a href="{{ url_for('my_parks') }}">My Parks</a>
+      <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+    <a href="/logout">Logout</a>
+  </div>
+<body>
+</head>
+
+<!-- Form that takes input to create new admin account -->
+
+<body>
+  <h1>Add Administrator Form</h1>
+  <h2>
+    {% if failed %}
+    Registration failed. Please try again.
+    {% endif %}
+  </h2>
+  <form action="/add_admin" method="POST">
+    <div class="input-wrapper">
+      <input type="text" placeholder="Username" id="username" name="username" class="input"><br>
+    </div>
+    <div class="input-wrapper">
+      <input type="password" placeholder="Password" id="password" name="password" class="input"><br>
+    </div>
+    <div class="input-wrapper">
+      <input type="text" placeholder="First Name" id="first_name" name="first_name" class="input"><br>
+    </div>
+    <div class="input-wrapper">
+      <input type="text" placeholder="Last Name" id="last_name" name="last_name" class="input"><br>
+    </div>
+    <div class="input-wrapper">
+      <input type="text" placeholder="Email" id="email" name="email" class="input"><br>
+    </div>
+    <div class="input-wrapper">
+      <input type="text" placeholder="Phone Number" id="phone_num" name="phone_num" class="input"><br>
+    </div>
+    <button type="submit">Add Administrator</button>
+  </form>
+  <button type="button" onclick="location.href='/dashboard'">Back</button>
+</body>
+
+</html>

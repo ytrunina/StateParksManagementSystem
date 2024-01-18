@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- Displays the user's profile information -->
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <title>
+    {{ session.username }}'s Profile
+  </title>
+</head>
+
+<body>
+  <div class="navbar">
+    {% if session.admin %}
+    <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+    <a href="{{ url_for('add_admin') }}">Add Admin</a>
+    <a href="{{ url_for('reports') }}">Reports</a>
+    {% else %}
+    <a href="{{ url_for('my_parks') }}">My Parks</a>
+    <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+    <a href="/profile">Profile</a>
+    <a href="/logout">Logout</a>
+  </div>
+  <table class="profile-table">
+    <tr>
+      <th>First Name</th>
+      <td>{{ first_name }}</td>
+    </tr>
+    <tr>
+      <th>Last Name</th>
+      <td>{{ last_name }}</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td>{{ email }}</td>
+    </tr>
+    <tr>
+      <th>Phone Number</th>
+      <td>{{ phone_num }}</td>
+    </tr>
+  </table>
+
+  <button style="width: 260px; height: 50px" onclick="openModal()">Edit Profile</button>
+
+  <!-- Popup Edit Table  -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h1>Edit Profile</h1>
+      <form method="post" action="{{ url_for('profile') }}">
+        <div class="input-wrapper">
+          <input type="text" placeholder="Name" id="first_name" name="first_name" class="input" value="{{ first_name }}"><br>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Last Name" id="last_name" name="last_name" class="input" value="{{ last_name }}"><br>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Email" id="email" name="email" class="input" value="{{ email }}"><br>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Phone Number" id="phone_num" name="phone_num" class="input"
+            value="{{ phone_num }}"><br>
+        </div>
+        <div class="input-wrapper">
+          <input type="password" placeholder="Password" id="regpassword" name="regpassword" class="input"><br>
+        </div>
+        <input type="hidden" name="id" value="{{ session.get('id') }}">
+        <input type="hidden" name="password" value="{{ pass0fixed }}">
+        <div>
+          <button style="width: 260px; height: 50px" type="submit">Submit</button>
+          <button style="width: 260px; height: 50px" type="button" onclick="location.href='/change_password'">Change
+            Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Gets modal for the popup form
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    function openModal() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+
+</html>

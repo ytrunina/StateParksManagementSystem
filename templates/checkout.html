@@ -1,0 +1,68 @@
+<!doctype html>
+<!-- Lists the parks in the cart and allows the user to enter payment information -->
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Checkout Page</title>
+    <script>
+        function validateForm() {
+            // Checks that the card number is 12 digits, CVV is 3 digits, and the expiration date is in the future
+            const cardExpiry = new Date(document.querySelector('input[name="cardEx"]').value);
+            const currentDate = new Date();
+            if (cardExpiry <= currentDate) {
+                alert('Card expired.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>Purchase Passes</h1>
+        <form action="{{ url_for('checkout') }}" method="POST" onsubmit="return validateForm();">
+            <h3>Parks in Cart:</h3>
+            <table class="checkout-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price per unit</th>
+                        <th>Qty.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for park in parks %}
+                    <tr>
+                        <td>{{ park[1] }}</td>
+                        <td>{{ park[2] }}</td>
+                        <td>${{ park[3] }}</td>
+                        <td>{{ park[4] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>Total price: ${{ total_price }}</h2>
+            <h3>Payment Information:</h3>
+            <label for="cardNum">Card Number:</label>
+            <input type="text" name="cardNum" id="cardNum" pattern="[0-9]{12}"
+                title="Card number must be exactly 12 digits" required><br>
+            <label for="cvv">CVV:</label>
+            <input type="text" name="cvv" id="cvv" pattern="[0-9]{3}" title="CVV must be exactly 3 digits" required><br>
+            <label for="cardEx">Expiration Date:</label>
+            <input type="month" name="cardEx" id="cardEx" required><br>
+
+            {% for park in parks %}
+            <input type="hidden" name="park_ids[]" value="{{ park[0] }}">
+            {% endfor %}
+            <input type="hidden" name="total_price" value="{{ total_price }}">
+
+            <input type="submit" value="Purchase"><br>
+        </form>
+        <button type="button" onclick="location.href='{{url_for('catalog')}}'">Back</button>
+    </div>
+</body>
+
+</html>

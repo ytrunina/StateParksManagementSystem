@@ -1,0 +1,346 @@
+/* General styling */
+body {
+  font-family: Arial, sans-serif;
+  color: #ccc;
+  background-color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin: 20px 0;
+  text-align: center;
+  color: #fff;
+}
+
+p {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 10px 0;
+}
+
+button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  background-color: #444;
+  border: none;
+  border-radius: 5px;
+  color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #333;
+  padding: 10px 0;
+}
+
+.navbar a {
+  display: inline-block;
+  color: #ccc;
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 1.1em;
+  margin: 0 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Form styling */
+form {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+label {
+  display: block;
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.input-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+  margin: 5px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #333;
+  color: #ccc;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #777;
+}
+
+h2 {
+  font-size: 1.4em;
+  text-align: center;
+  color: #f00;
+  margin: 20px 0;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  max-width: 10000px;
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #555;
+}
+
+th {
+  background-color: #444;
+  color: #fff;
+}
+
+td a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+td a:hover {
+  color: #fff;
+}
+
+/* Custom checkbox styling */
+.checkbox-label {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 3px
+}
+
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid #ccc;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label input:checked~.checkmark {
+  background-color: #444;
+}
+
+.checkbox-label input:checked~.checkmark:after {
+  display: block;
+}
+
+input[type="submit"] {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  background-color: #444;
+  border: none;
+  border-radius: 5px;
+  color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Popup CSS */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  text-align: center;
+}
+
+.close {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #444;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+.popup .close {
+  float: right;
+  margin-right: 10px;
+}
+
+/* Checkout table */
+.checkout-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
+.checkout-table th,
+.checkout-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.checkout-table th {
+  background-color: #333;
+  color: #fff;
+}
+
+.checkout-table tr:nth-child(even) {
+  background-color: #333;
+}
+
+/* Search input */
+#searchInput {
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  background-color: #333;
+  color: #ccc;
+}
+
+#searchInput::placeholder {
+  color: #888;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #777;
+}
+
+/* Responsive search input */
+@media screen and (max-width: 480px) {
+  #searchInput {
+    width: 100%;
+  }
+}
+
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #333;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #555;
+  width: 50%;
+  text-align: center;
+  color: #ccc;
+}
+
+.close {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #444;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+/* Profile table */
+.profile-table {
+  width: 50%;
+  max-width: 600px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  color: #ccc;
+}
+
+.profile-table th,
+.profile-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #555;
+}
+
+.profile-table th {
+  background-color: #444;
+  color: #fff;
+}

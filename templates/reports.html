@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Reports Page</title>
+  </head>
+  <div class="navbar">
+    {% if session.admin %}
+      <a href="{{ url_for('check_qr_code') }}">Check Pass QR</a>
+      <a href="{{ url_for('add_admin') }}">Add Admin</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+    {% endif %}
+    <a href="/profile">Profile</a>
+    {% if not session.admin %}
+      <a href="{{ url_for('my_parks') }}">My Parks</a>
+      <a href="{{ url_for('catalog') }}">Get Park Passes</a>
+    {% endif %}
+    <a href="/logout">Logout</a>
+  </div>
+  <body>
+    <h1>Reports</h1>
+    <h2>
+      {% if failed %}
+      Access to reports failed. Please try again.
+      {% endif %}
+    </h2>
+    <div class="input-wrapper">
+      <button type="button" onclick="location.href='/parkpasses_report'">Park Passes Report</button>
+    </div>
+    <div class="input-wrapper">
+      <button type="button" onclick="location.href='/revenue_reports'">Revenue Report</button>
+    </div>
+    <button type="button" onclick="location.href='/dashboard'">Back</button>
+  </body>
+</html>
